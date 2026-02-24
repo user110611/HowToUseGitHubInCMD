@@ -17,6 +17,60 @@ git config --global user.email "твой@email.com"
 
 ---
 
+## 🆕 Создать репозиторий на GitHub через консоль
+
+### Способ 1: GitHub CLI (gh) — рекомендуется
+
+Установи [GitHub CLI](https://cli.github.com/), затем авторизуйся:
+```bash
+gh auth login
+```
+
+Создай репозиторий:
+```bash
+# Публичный репозиторий
+gh repo create my-project --public
+
+# Приватный репозиторий
+gh repo create my-project --private
+
+# Создать + сразу клонировать
+gh repo create my-project --public --clone
+
+# Создать из текущей папки (добавит remote и сделает первый push)
+gh repo create my-project --public --source=. --push
+```
+
+### Способ 2: Через API (curl) — без установки gh
+
+```bash
+# Замени YOUR_TOKEN на свой Personal Access Token
+curl -X POST https://api.github.com/user/repos \
+  -H "Authorization: token YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "my-project",
+    "private": false,
+    "description": "Описание репозитория"
+  }'
+```
+
+### После создания — подключи локальную папку
+
+```bash
+mkdir my-project && cd my-project
+git init
+git remote add origin https://github.com/username/my-project.git
+echo "# my-project" > README.md
+git add .
+git commit -m "first commit"
+git push -u origin main
+```
+
+> **Флаг `-u`** (upstream) запоминает ветку — после этого можно писать просто `git push` и `git pull`.
+
+---
+
 ## 🔑 Авторизация на GitHub
 
 ### Через Personal Access Token (рекомендуется)
